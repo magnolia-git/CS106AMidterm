@@ -1,0 +1,190 @@
+Problem 1: Karel the Robot
+
+import stanford.karel.*;
+public class KarelBeeperBorder extends SuperKarel {
+	/*
+	  Getting Karel into position, assuming the world is rectangular.	
+	  Since Karel starts in the bottom-left corner facing east, I
+	  position Karel by moving him on 2nd Street and 2nd Avenue, facing east.
+	*/
+	public void run() {
+		move();
+		turnLeft();
+		move();
+		turnRight();
+		move();
+		makeWalls();
+	}
+
+	// Karel knows he's finished if he notices a beeper is present underneath him.
+	public void makeWalls() {
+		if (beepersPresent()) {
+			println("Okay I'm done.");
+		} else {
+			makeRow();
+			makeWalls();
+		}
+	}
+
+	/*
+	  While Karel's front is clear, he will place a beeper and move.
+	  When he finally hits a wall, he will turn around and move once.
+	  He will then turn right and move once to position for the next row.
+	*/
+	public void makeRow() {
+		while (frontIsClear()) {
+			putBeeper();
+			move();
+		}
+		turnAround();
+		move();
+		turnRight();
+		move();
+	}
+}
+
+Problem 2: Simple Java expressions, statements, and methods
+
+2a)
+	5.0 / 4 - 4 / 5		: 1.25
+
+	7 < 9 - 5 && 3 % 0 == 3 : false. While dividing by zero (or doing modulus zero) will result in an error,
+				  the left side of this comparison (7 < 9 - 5) is already false, making it impossible
+				  to reach the right side of the comparison.
+
+	"B" + 8 + 4		: "B84"
+
+
+2b)
+
+	The 1st number is: 78
+	The 2nd number is: 73
+
+Problem 3: Simple Java programs
+
+import acm.program.ConsoleProgram;
+public class SecondLargest extends ConsoleProgram {
+	
+	// Instance variables
+	
+	public static int largest = 0;
+	public static int secondLargest = 0;
+	public static int userInput = 0;
+	
+	public void run() {
+		println("This program finds the two largest integers in a list."
+				+ " Enter values, one per line, using a 0 to signal the end of the list.");
+		while (true) {
+			
+			userInput = readInt(" ? ");
+		
+			if (userInput == 0) break; 
+			
+			if (userInput > largest) {
+				largest = userInput;
+			} else if (userInput <= largest && userInput >= secondLargest) {
+				secondLargest = userInput;
+			}
+		}
+		println("The largest value is " + largest);
+		println("The second largest is " + secondLargest);
+	}	
+}
+
+Problem 4
+
+import acm.graphics.*;
+import acm.program.GraphicsProgram;
+import java.awt.event.MouseEvent;
+
+public class Frogger extends GraphicsProgram {
+	
+	// Final variables:
+	private static final int SQSIZE = 75;
+	private static final int NCOLS = 7;
+	private static final int NROWS = 3;
+	public static final int APPLICATION_WIDTH = NCOLS * SQSIZE;
+	public static final int APPLICATION_HEIGHT = NROWS * SQSIZE;
+	// Instance variables: 
+	private static int fX = 3;
+	private static int fY = 2;
+	private static GImage frog = new GImage("frog.gif", SQSIZE * fX, SQSIZE * fY);
+	
+	public void run() {
+		add(frog);
+		println(frog.getX() + SQSIZE / 2);
+		addMouseListeners();
+	}
+	
+	/* Methods getXLocation and getYLocation get the center of the frog image.
+	 * Any GImage can be passed through, but results may vary.
+	 */
+	
+	private double getXLocation(GImage image) {
+		return image.getX() + SQSIZE / 2;
+	}
+	private double getYLocation(GImage image) {
+		return image.getY() + SQSIZE / 2;
+	}
+	
+	/* The following 4 methods do as they say, with some checks on the frog's 
+	 * current location.
+	 */
+	
+	private void jumpNorth() {
+		if (fY > 0) {
+			frog.move(0, -SQSIZE);
+			fY--;
+		}
+	}
+	private void jumpSouth() {
+		if (fY < NROWS - 1) {
+			frog.move(0, SQSIZE);
+			fY++;
+		}
+	}
+	private void jumpEast() {
+		if (fX < NCOLS - 1) {
+			frog.move(SQSIZE, 0);
+			fX++;
+		}
+	}
+	private void jumpWest() {
+		if (fX > 0) {
+			frog.move(-SQSIZE, 0);
+			fX--;
+		}
+	}
+	public void mouseClicked(MouseEvent e) {
+		double mouseX = e.getX();
+		double mouseY = e.getY();
+		
+		// If the mouse is clicking in the area of the grid...
+		if (mouseX <= SQSIZE * NCOLS && mouseY <= SQSIZE * NROWS) {
+			// If the X position of the mouse if greater than the Y position...
+			if (Math.abs(mouseX - getXLocation(frog)) > Math.abs(mouseY - getYLocation(frog))) {
+				// If the X position of the mouse is greater (farther east) than the frog's...
+				if (mouseX > getXLocation(frog)) jumpEast();
+				else jumpWest();
+			} else {
+				// If the Y position of the mouse is greater (farther south) than the frog's...
+				if (mouseY > getYLocation(frog)) jumpSouth();
+				else jumpNorth();
+			}
+		}
+	}
+}
+
+Problem 5: Strings and characters
+
+public static String removeDoubledLetters(String string) {
+	String newString = ""; 
+	newString += string.charAt(0);
+	for (int i = 1; i < string.length(); i++) {
+		char cha = string.charAt(i);
+		if (cha != string.charAt(i - 1)) { 
+			newString += cha;
+		}
+	}
+	return newString;
+}
