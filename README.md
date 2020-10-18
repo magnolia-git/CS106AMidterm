@@ -1,0 +1,1 @@
+This repository includes 4 classes: KarelBeeperBorder, SecondLargest, Frogger, and RemoveDoubles. Also included is a text file with answers to questions from here: https://see.stanford.edu/materials/icspmcs106a/28-practice-midterm.pdf
